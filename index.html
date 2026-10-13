@@ -106,14 +106,23 @@ section.block{padding-block:72px;border-top:1px solid var(--line)}
 .meta div{display:flex;gap:6px}
 .meta dt{color:var(--muted)}
 .meta dd{margin:0;font-variant-numeric:tabular-nums}
-.acts{display:flex;flex-direction:column;align-items:stretch;gap:10px;min-width:220px}
+.acts{display:flex;flex-direction:column;align-items:stretch;gap:10px;width:260px}
+.thumb{display:block;width:100%;padding:0;margin:0 0 6px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);cursor:zoom-in;box-shadow:0 14px 28px -18px rgba(20,28,40,.35);transition:border-color .2s,transform .2s}
+.thumb:hover{border-color:var(--muted);transform:translateY(-2px)}
+.thumb img{display:block;width:100%;height:auto;aspect-ratio:5/4;object-fit:cover;object-position:top left}
+.shot{padding:0;border:0;background:none;max-width:min(1100px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:visible}
+.shot::backdrop{background:rgba(10,14,20,.78)}
+.shot img{display:block;max-width:100%;max-height:calc(100dvh - 32px);width:auto;height:auto;border-radius:10px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6)}
+.shot button{position:absolute;top:-14px;right:-14px;width:36px;height:36px;border-radius:50%;border:0;background:var(--surface);color:var(--ink);font:600 20px/1 var(--body);cursor:pointer}
 .acts .src{font-size:15px;color:var(--muted);text-align:center}
 .more{margin-top:24px;color:var(--muted);font-size:15px}
 @media (max-width:760px){
   .prog{grid-template-columns:56px minmax(0,1fr);gap:18px}
   .prog .ico{width:56px;height:56px;border-radius:14px}
   .prog .ico svg{width:32px;height:32px}
-  .acts{grid-column:1/-1;min-width:0}
+  .acts{grid-column:1/-1;width:auto}
+  .thumb{max-width:420px}
+  .shot button{top:8px;right:8px}
 }
 
 /* safety */
@@ -154,7 +163,8 @@ footer .who{color:var(--ink);font-weight:600}
 footer .links{display:flex;flex-wrap:wrap;gap:20px}
 
 @media (prefers-reduced-motion:reduce){
-  .item,.folder .badge{transition:none}
+  .item,.folder .badge,.thumb{transition:none}
+  .thumb:hover{transform:none}
   .folder.pulse svg{animation:none}
 }
 </style>
@@ -238,6 +248,7 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
             </dl>
           </div>
           <div class="acts">
+            <button class="thumb" type="button" aria-label="Увеличи снимката на Desktop Organizer"><img src="img/desktop-organizer.png" width="612" height="487" alt="Прозорецът на Desktop Organizer" loading="lazy"></button>
             <a class="btn btn-main" href="https://github.com/waitingboy-collab/desktop-organizer/releases/latest/download/DesktopOrganizer-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg>Свали инсталатора</a>
             <a class="src" href="https://github.com/waitingboy-collab/desktop-organizer" target="_blank" rel="noopener">Сорс код и версии</a>
           </div>
@@ -257,6 +268,7 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
             </dl>
           </div>
           <div class="acts">
+            <button class="thumb" type="button" aria-label="Увеличи снимката на Disk Cleanup"><img src="img/disk-cleanup.png" width="751" height="616" alt="Прозорецът на Disk Cleanup" loading="lazy"></button>
             <a class="btn btn-main" href="https://github.com/waitingboy-collab/disk-cleanup/releases/latest/download/DiskCleanup-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg>Свали инсталатора</a>
             <a class="src" href="https://github.com/waitingboy-collab/disk-cleanup" target="_blank" rel="noopener">Сорс код и версии</a>
           </div>
@@ -276,6 +288,7 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
             </dl>
           </div>
           <div class="acts">
+            <button class="thumb" type="button" aria-label="Увеличи снимката на Install Helper"><img src="img/install-helper.png" width="1096" height="902" alt="Прозорецът на Install Helper" loading="lazy"></button>
             <a class="btn btn-main" href="https://github.com/waitingboy-collab/install-helper/releases/latest/download/InstallHelper-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg>Свали инсталатора</a>
             <a class="src" href="https://github.com/waitingboy-collab/install-helper" target="_blank" rel="noopener">Сорс код и версии</a>
           </div>
@@ -333,6 +346,11 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
     </div>
   </section>
 </main>
+
+<dialog class="shot" id="shot" aria-label="Снимка на програмата">
+  <img id="shotImg" src="" alt="">
+  <button type="button" id="shotClose" aria-label="Затвори">&times;</button>
+</dialog>
 
 <footer>
   <div class="wrap">
@@ -471,6 +489,20 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
         .catch(function(){});
     } catch (e) {}
   });
+
+  // ---------- Screenshot lightbox ----------
+  var shot = document.getElementById('shot');
+  var shotImg = document.getElementById('shotImg');
+  document.querySelectorAll('.thumb').forEach(function(t){
+    var img = t.querySelector('img');
+    t.addEventListener('click', function(){
+      if (!shot.showModal){ window.open(img.src, '_blank'); return; }
+      shotImg.src = img.src; shotImg.alt = img.alt;
+      shot.showModal();
+    });
+  });
+  document.getElementById('shotClose').addEventListener('click', function(){ shot.close(); });
+  shot.addEventListener('click', function(e){ if (e.target === shot) shot.close(); });
 
   // ---------- Copy hash command ----------
   var copyBtn = document.getElementById('copyBtn');
