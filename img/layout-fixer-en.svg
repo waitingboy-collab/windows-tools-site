@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800" width="1000" height="800" font-family="Segoe UI, system-ui, sans-serif">
+  <rect width="1000" height="800" fill="#F4F6F9"/>
+
+  <!-- window -->
+  <rect x="40" y="40" width="920" height="600" rx="14" fill="#FFFFFF" stroke="#DAE0E8" stroke-width="2"/>
+  <text x="72" y="80" font-size="22" fill="#566173">Document1</text>
+  <g stroke="#566173" stroke-width="2" fill="none">
+    <path d="M818 70h18"/>
+    <rect x="866" y="61" width="17" height="17"/>
+    <path d="M914 61l17 17M931 61l-17 17"/>
+  </g>
+  <path d="M42 102h916" stroke="#DAE0E8" stroke-width="2"/>
+
+  <!-- before -->
+  <text x="80" y="160" font-size="20" font-weight="600" fill="#566173" letter-spacing="1">BEFORE</text>
+  <rect x="80" y="178" width="230" height="64" rx="6" fill="#CCE0FF"/>
+  <text x="195" y="223" text-anchor="middle" font-size="40" fill="#141C28">zdravej</text>
+  <text x="350" y="220" font-size="22" fill="#566173">typed with the English layout on</text>
+
+  <!-- keys -->
+  <g font-size="28" font-weight="600" fill="#141C28" text-anchor="middle">
+    <rect x="80" y="288" width="130" height="68" rx="12" fill="#C9D8EA"/>
+    <rect x="80" y="282" width="130" height="68" rx="12" fill="#FFFFFF" stroke="#9BA6B6" stroke-width="2"/>
+    <text x="145" y="326">Ctrl</text>
+    <text x="236" y="326" fill="#566173" font-weight="400">+</text>
+    <rect x="262" y="288" width="130" height="68" rx="12" fill="#C9D8EA"/>
+    <rect x="262" y="282" width="130" height="68" rx="12" fill="#FFFFFF" stroke="#9BA6B6" stroke-width="2"/>
+    <text x="327" y="326">Alt</text>
+    <text x="418" y="326" fill="#566173" font-weight="400">+</text>
+    <rect x="444" y="288" width="260" height="68" rx="12" fill="#C9D8EA"/>
+    <rect x="444" y="282" width="260" height="68" rx="12" fill="#FFFFFF" stroke="#9BA6B6" stroke-width="2"/>
+    <text x="574" y="326">Space</text>
+  </g>
+  <path d="M145 382v52m-14-14 14 14 14-14" fill="none" stroke="#566173" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- after -->
+  <text x="80" y="486" font-size="20" font-weight="600" fill="#566173" letter-spacing="1">AFTER</text>
+  <rect x="80" y="504" width="230" height="64" rx="6" fill="#FCEBB6"/>
+  <text x="195" y="549" text-anchor="middle" font-size="40" fill="#141C28">здравей</text>
+  <text x="350" y="536" font-size="22" fill="#566173">fixed in place, and the layout</text>
+  <text x="350" y="564" font-size="22" fill="#566173">is switched to Bulgarian</text>
+
+  <!-- taskbar -->
+  <rect x="0" y="710" width="1000" height="90" fill="#DCE6F1"/>
+  <path d="M0 710h1000" stroke="#C9D8EA" stroke-width="2"/>
+  <rect x="790" y="732" width="46" height="46" rx="10" fill="#F2B321"/>
+  <text x="813" y="765" text-anchor="middle" font-size="28" font-weight="700" fill="#141C28">Б</text>
+  <text x="862" y="764" font-size="22" fill="#141C28">21:30</text>
+</svg>

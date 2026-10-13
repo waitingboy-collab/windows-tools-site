@@ -7,6 +7,17 @@
 <meta name="description" content="Безплатни програми за Windows с отворен код: Desktop Organizer, Disk Cleanup, Install Helper, Грешна подредба, Office Health Check. Направени от Радослав Чакъров.">
 <meta property="og:title" content="Работилницата на Радо">
 <meta property="og:description" content="Малки програми за Windows, които вършат по една работа.">
+<link rel="alternate" hreflang="bg" href="https://rado-workshop.vercel.app/?lang=bg">
+<link rel="alternate" hreflang="en" href="https://rado-workshop.vercel.app/?lang=en">
+<script>
+  // Избира езика преди първото рисуване: ?lang=, после запомнения избор, после езика на браузъра.
+  (function(){
+    var l = new URLSearchParams(location.search).get('lang');
+    if (l !== 'bg' && l !== 'en'){ try { l = localStorage.getItem('lang'); } catch (e) {} }
+    if (l !== 'bg' && l !== 'en') l = /^bg\b/i.test(navigator.language || '') ? 'bg' : 'en';
+    document.documentElement.lang = l;
+  })();
+</script>
 <style>img{max-width:100%}[hidden]{display:none!important}body{margin:0}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -50,6 +61,9 @@ p{margin:0}
 .nav{display:flex;gap:22px;font-size:15px}
 .nav a{text-decoration:none;color:var(--muted)}
 .nav a:hover{color:var(--ink)}
+.nav{align-items:center}
+.lang{font:600 13px/1 var(--body);letter-spacing:.04em;color:var(--muted);background:none;border:1px solid var(--line);border-radius:8px;padding:6px 9px;cursor:pointer}
+.lang:hover{color:var(--ink);border-color:var(--muted)}
 @media (max-width:640px){.nav .opt{display:none}}
 
 /* buttons */
@@ -185,13 +199,14 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
   <div class="wrap">
     <a class="brand" href="#">
       <svg aria-hidden="true"><use href="#fold"/></svg>
-      Работилницата на Радо
+      <span data-i18n="brand">Работилницата на Радо</span>
     </a>
-    <nav class="nav" aria-label="Основна навигация">
-      <a href="#programi">Програми</a>
-      <a class="opt" href="#bezopasnost">Безопасност</a>
-      <a class="opt" href="#kak">Как ги правя</a>
-      <a href="https://github.com/waitingboy-collab" target="_blank" rel="noopener">GitHub</a>
+    <nav class="nav" aria-label="Основна навигация" data-i18n-attr="aria-label:navLabel">
+      <a href="#programi" data-i18n="navProgs">Програми</a>
+      <a class="opt" href="#bezopasnost" data-i18n="navSafety">Безопасност</a>
+      <a class="opt" href="#kak" data-i18n="navHow">Как ги правя</a>
+      <a class="opt" href="https://github.com/waitingboy-collab" target="_blank" rel="noopener">GitHub</a>
+      <button class="lang" id="langBtn" type="button" aria-label="English version">EN</button>
     </nav>
   </div>
 </header>
@@ -199,19 +214,19 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
 <main>
   <div class="wrap hero">
     <div>
-      <h1>Малки програми за Windows, които вършат по една работа</h1>
-      <p class="lede">Подреждат десктопа, чистят диска, инсталират програми и принтери, поправят текст с грешна подредба и проверяват офис компютъра. Безплатни са, с отворен код, и всяка се инсталира за минута.</p>
+      <h1 data-i18n="h1">Малки програми за Windows, които вършат по една работа</h1>
+      <p class="lede" data-i18n="lede">Подреждат десктопа, чистят диска, инсталират програми и принтери, поправят текст с грешна подредба и проверяват офис компютъра. Безплатни са, с отворен код, и всяка се инсталира за минута.</p>
       <div class="ctas">
-        <a class="btn btn-main" href="#programi">Виж програмите</a>
-        <a class="btn btn-line" href="https://github.com/waitingboy-collab" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#gh"/></svg>Кодът в GitHub</a>
+        <a class="btn btn-main" href="#programi" data-i18n="ctaProgs">Виж програмите</a>
+        <a class="btn btn-line" href="https://github.com/waitingboy-collab" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#gh"/></svg><span data-i18n="ctaCode">Кодът в GitHub</span></a>
       </div>
-      <p class="req">Windows 10 и 11, 64-bit. Не е нужно да инсталираш .NET.</p>
+      <p class="req" data-i18n="req">Windows 10 и 11, 64-bit. Не е нужно да инсталираш .NET.</p>
     </div>
 
     <div>
       <figure class="window">
         <div class="titlebar">
-          <span>Десктоп</span>
+          <span data-i18n="desktop">Десктоп</span>
           <span class="winctl" aria-hidden="true">
             <span><svg viewBox="0 0 10 10"><path d="M0 5h10"/></svg></span>
             <span><svg viewBox="0 0 10 10"><rect x=".5" y=".5" width="9" height="9"/></svg></span>
@@ -224,14 +239,15 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
           <button class="btn btn-main" id="sortBtn" type="button">Подреди десктопа</button>
         </div>
       </figure>
-      <p class="cap">Пробвай бутона. Така работи Desktop Organizer на истински десктоп.</p>
+      <p class="cap" data-i18n="cap">Пробвай бутона. Така работи Desktop Organizer на истински десктоп.</p>
     </div>
   </div>
 
   <section class="block" id="programi">
     <div class="wrap">
-      <h2>Програмите</h2>
-      <p class="intro">Всяка програма е отделен проект в GitHub. Бутонът за сваляне винаги дава последната версия.</p>
+      <h2 data-i18n="progsH">Програмите</h2>
+      <p class="intro" data-i18n="progsIntro">Всяка програма е отделен проект в GitHub. Бутонът за сваляне винаги дава последната версия.</p>
+      <p class="intro" data-only="en" hidden>Note: the programs themselves are in Bulgarian for now. The screenshots below show their real interface.</p>
 
       <ul class="progs">
         <li class="prog" data-repo="desktop-organizer">
@@ -240,17 +256,17 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
           </div>
           <div>
             <h3>Desktop Organizer</h3>
-            <p class="desc">Подрежда файловете от десктопа в папки според вида им: документи, снимки, видео, архиви и програми.</p>
+            <p class="desc" data-i18n="dDO">Подрежда файловете от десктопа в папки според вида им: документи, снимки, видео, архиви и програми.</p>
             <dl class="meta">
-              <div><dt>Версия</dt><dd data-f="ver">виж в GitHub</dd></div>
-              <div><dt>Пусната</dt><dd data-f="date">—</dd></div>
-              <div><dt>Размер</dt><dd data-f="size">—</dd></div>
+              <div><dt data-i18n="ver">Версия</dt><dd data-f="ver" data-i18n="seeGh">виж в GitHub</dd></div>
+              <div><dt data-i18n="date">Пусната</dt><dd data-f="date">—</dd></div>
+              <div><dt data-i18n="size">Размер</dt><dd data-f="size">—</dd></div>
             </dl>
           </div>
           <div class="acts">
-            <button class="thumb" type="button" aria-label="Увеличи снимката на Desktop Organizer"><img src="img/desktop-organizer.png" width="612" height="487" alt="Прозорецът на Desktop Organizer" loading="lazy"></button>
-            <a class="btn btn-main" href="https://github.com/waitingboy-collab/desktop-organizer/releases/latest/download/DesktopOrganizer-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg>Свали инсталатора</a>
-            <a class="src" href="https://github.com/waitingboy-collab/desktop-organizer" target="_blank" rel="noopener">Сорс код и версии</a>
+            <button class="thumb" type="button" aria-label="Увеличи снимката на Desktop Organizer" data-i18n-attr="aria-label:thDO"><img src="img/desktop-organizer.png" width="612" height="487" alt="Прозорецът на Desktop Organizer" data-i18n-attr="alt:altDO" loading="lazy"></button>
+            <a class="btn btn-main" href="https://github.com/waitingboy-collab/desktop-organizer/releases/latest/download/DesktopOrganizer-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg><span data-i18n="dl">Свали инсталатора</span></a>
+            <a class="src" href="https://github.com/waitingboy-collab/desktop-organizer" target="_blank" rel="noopener" data-i18n="src">Сорс код и версии</a>
           </div>
         </li>
 
@@ -260,17 +276,17 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
           </div>
           <div>
             <h3>Disk Cleanup</h3>
-            <p class="desc">Изчиства временни файлове и кеш, за да освободи място на диска.</p>
+            <p class="desc" data-i18n="dDC">Изчиства временни файлове и кеш, за да освободи място на диска.</p>
             <dl class="meta">
-              <div><dt>Версия</dt><dd data-f="ver">виж в GitHub</dd></div>
-              <div><dt>Пусната</dt><dd data-f="date">—</dd></div>
-              <div><dt>Размер</dt><dd data-f="size">—</dd></div>
+              <div><dt data-i18n="ver">Версия</dt><dd data-f="ver" data-i18n="seeGh">виж в GitHub</dd></div>
+              <div><dt data-i18n="date">Пусната</dt><dd data-f="date">—</dd></div>
+              <div><dt data-i18n="size">Размер</dt><dd data-f="size">—</dd></div>
             </dl>
           </div>
           <div class="acts">
-            <button class="thumb" type="button" aria-label="Увеличи снимката на Disk Cleanup"><img src="img/disk-cleanup.png" width="751" height="616" alt="Прозорецът на Disk Cleanup" loading="lazy"></button>
-            <a class="btn btn-main" href="https://github.com/waitingboy-collab/disk-cleanup/releases/latest/download/DiskCleanup-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg>Свали инсталатора</a>
-            <a class="src" href="https://github.com/waitingboy-collab/disk-cleanup" target="_blank" rel="noopener">Сорс код и версии</a>
+            <button class="thumb" type="button" aria-label="Увеличи снимката на Disk Cleanup" data-i18n-attr="aria-label:thDC"><img src="img/disk-cleanup.png" width="751" height="616" alt="Прозорецът на Disk Cleanup" data-i18n-attr="alt:altDC" loading="lazy"></button>
+            <a class="btn btn-main" href="https://github.com/waitingboy-collab/disk-cleanup/releases/latest/download/DiskCleanup-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg><span data-i18n="dl">Свали инсталатора</span></a>
+            <a class="src" href="https://github.com/waitingboy-collab/disk-cleanup" target="_blank" rel="noopener" data-i18n="src">Сорс код и версии</a>
           </div>
         </li>
 
@@ -280,17 +296,17 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
           </div>
           <div>
             <h3>Install Helper</h3>
-            <p class="desc">Инсталира често ползвани програми с няколко клика и помага с принтерите: добавяне по IP, тестова страница, рестарт на спулера. Проверява и дали Windows Update не подменя драйверите. Направена за офис компютри.</p>
+            <p class="desc" data-i18n="dIH">Инсталира често ползвани програми с няколко клика и помага с принтерите: добавяне по IP, тестова страница, рестарт на спулера. Проверява и дали Windows Update не подменя драйверите. Направена за офис компютри.</p>
             <dl class="meta">
-              <div><dt>Версия</dt><dd data-f="ver">виж в GitHub</dd></div>
-              <div><dt>Пусната</dt><dd data-f="date">—</dd></div>
-              <div><dt>Размер</dt><dd data-f="size">—</dd></div>
+              <div><dt data-i18n="ver">Версия</dt><dd data-f="ver" data-i18n="seeGh">виж в GitHub</dd></div>
+              <div><dt data-i18n="date">Пусната</dt><dd data-f="date">—</dd></div>
+              <div><dt data-i18n="size">Размер</dt><dd data-f="size">—</dd></div>
             </dl>
           </div>
           <div class="acts">
-            <button class="thumb" type="button" aria-label="Увеличи снимката на Install Helper"><img src="img/install-helper.png" width="1096" height="902" alt="Прозорецът на Install Helper" loading="lazy"></button>
-            <a class="btn btn-main" href="https://github.com/waitingboy-collab/install-helper/releases/latest/download/InstallHelper-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg>Свали инсталатора</a>
-            <a class="src" href="https://github.com/waitingboy-collab/install-helper" target="_blank" rel="noopener">Сорс код и версии</a>
+            <button class="thumb" type="button" aria-label="Увеличи снимката на Install Helper" data-i18n-attr="aria-label:thIH"><img src="img/install-helper.png" width="1096" height="902" alt="Прозорецът на Install Helper" data-i18n-attr="alt:altIH" loading="lazy"></button>
+            <a class="btn btn-main" href="https://github.com/waitingboy-collab/install-helper/releases/latest/download/InstallHelper-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg><span data-i18n="dl">Свали инсталатора</span></a>
+            <a class="src" href="https://github.com/waitingboy-collab/install-helper" target="_blank" rel="noopener" data-i18n="src">Сорс код и версии</a>
           </div>
         </li>
 
@@ -299,18 +315,18 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
             <svg viewBox="0 0 40 40"><rect x="3" y="9" width="34" height="22" rx="4" fill="none" stroke="var(--muted)" stroke-width="2"/><rect x="7" y="13" width="11" height="10" rx="2" fill="var(--folder)"/><text x="12.5" y="21" text-anchor="middle" font-family="Golos Text,Segoe UI,sans-serif" font-size="8" font-weight="700" fill="#141C28">Б</text><rect x="21" y="13" width="5" height="4" rx="1" fill="var(--muted)"/><rect x="28" y="13" width="5" height="4" rx="1" fill="var(--muted)"/><rect x="21" y="19" width="12" height="4" rx="1" fill="var(--muted)"/><path d="M12 27h16" stroke="var(--muted)" stroke-width="2" stroke-linecap="round"/></svg>
           </div>
           <div>
-            <h3>Грешна подредба</h3>
-            <p class="desc">Поправя текст, написан с грешна клавиатурна подредба: „zdravej“ става „здравей“, а „геввд“ става „hello“. Маркираш текста и натискаш Ctrl + Alt + Space. Работи във всяка програма и стои като иконка до часовника.</p>
+            <h3 data-i18n="nLF">Грешна подредба</h3>
+            <p class="desc" data-i18n="dLF">Поправя текст, написан с грешна клавиатурна подредба: „zdravej“ става „здравей“, а „геввд“ става „hello“. Маркираш текста и натискаш Ctrl + Alt + Space. Работи във всяка програма и стои като иконка до часовника.</p>
             <dl class="meta">
-              <div><dt>Версия</dt><dd data-f="ver">виж в GitHub</dd></div>
-              <div><dt>Пусната</dt><dd data-f="date">—</dd></div>
-              <div><dt>Размер</dt><dd data-f="size">—</dd></div>
+              <div><dt data-i18n="ver">Версия</dt><dd data-f="ver" data-i18n="seeGh">виж в GitHub</dd></div>
+              <div><dt data-i18n="date">Пусната</dt><dd data-f="date">—</dd></div>
+              <div><dt data-i18n="size">Размер</dt><dd data-f="size">—</dd></div>
             </dl>
           </div>
           <div class="acts">
-            <button class="thumb" type="button" aria-label="Увеличи схемата на Грешна подредба"><img src="img/layout-fixer.svg" width="1000" height="800" alt="Схема: маркираш „zdravej“, натискаш Ctrl + Alt + Space и става „здравей“" loading="lazy"></button>
-            <a class="btn btn-main" href="https://github.com/waitingboy-collab/layout-fixer/releases/latest/download/LayoutFixer-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg>Свали инсталатора</a>
-            <a class="src" href="https://github.com/waitingboy-collab/layout-fixer" target="_blank" rel="noopener">Сорс код и версии</a>
+            <button class="thumb" type="button" aria-label="Увеличи схемата на Грешна подредба" data-i18n-attr="aria-label:thLF"><img src="img/layout-fixer.svg" width="1000" height="800" alt="Схема: маркираш „zdravej“, натискаш Ctrl + Alt + Space и става „здравей“" data-i18n-attr="alt:altLF" data-src-en="img/layout-fixer-en.svg" loading="lazy"></button>
+            <a class="btn btn-main" href="https://github.com/waitingboy-collab/layout-fixer/releases/latest/download/LayoutFixer-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg><span data-i18n="dl">Свали инсталатора</span></a>
+            <a class="src" href="https://github.com/waitingboy-collab/layout-fixer" target="_blank" rel="noopener" data-i18n="src">Сорс код и версии</a>
           </div>
         </li>
 
@@ -320,54 +336,54 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
           </div>
           <div>
             <h3>Office Health Check</h3>
-            <p class="desc">Проверява офис компютър с един клик: обновления на Windows, антивирусна, дискове, памет, принтери, архив и интернет. Прави отчет в PDF, който можеш да пратиш на човека, който поддържа компютрите. Само чете и не променя нищо.</p>
+            <p class="desc" data-i18n="dOHC">Проверява офис компютър с един клик: обновления на Windows, антивирусна, дискове, памет, принтери, архив и интернет. Прави отчет в PDF, който можеш да пратиш на човека, който поддържа компютрите. Само чете и не променя нищо.</p>
             <dl class="meta">
-              <div><dt>Версия</dt><dd data-f="ver">виж в GitHub</dd></div>
-              <div><dt>Пусната</dt><dd data-f="date">—</dd></div>
-              <div><dt>Размер</dt><dd data-f="size">—</dd></div>
+              <div><dt data-i18n="ver">Версия</dt><dd data-f="ver" data-i18n="seeGh">виж в GitHub</dd></div>
+              <div><dt data-i18n="date">Пусната</dt><dd data-f="date">—</dd></div>
+              <div><dt data-i18n="size">Размер</dt><dd data-f="size">—</dd></div>
             </dl>
           </div>
           <div class="acts">
-            <button class="thumb" type="button" aria-label="Увеличи снимката на Office Health Check"><img src="img/office-health-check.png" width="1022" height="706" alt="Прозорецът на Office Health Check" loading="lazy"></button>
-            <a class="btn btn-main" href="https://github.com/waitingboy-collab/office-health-check/releases/latest/download/OfficeHealthCheck-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg>Свали инсталатора</a>
-            <a class="src" href="https://github.com/waitingboy-collab/office-health-check" target="_blank" rel="noopener">Сорс код и версии</a>
+            <button class="thumb" type="button" aria-label="Увеличи снимката на Office Health Check" data-i18n-attr="aria-label:thOHC"><img src="img/office-health-check.png" width="1022" height="706" alt="Прозорецът на Office Health Check" data-i18n-attr="alt:altOHC" loading="lazy"></button>
+            <a class="btn btn-main" href="https://github.com/waitingboy-collab/office-health-check/releases/latest/download/OfficeHealthCheck-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg><span data-i18n="dl">Свали инсталатора</span></a>
+            <a class="src" href="https://github.com/waitingboy-collab/office-health-check" target="_blank" rel="noopener" data-i18n="src">Сорс код и версии</a>
           </div>
         </li>
       </ul>
-      <p class="more">Следващите програми се появяват тук веднага щом пусна първа версия.</p>
+      <p class="more" data-i18n="more">Следващите програми се появяват тук веднага щом пусна първа версия.</p>
     </div>
   </section>
 
   <section class="block" id="bezopasnost">
     <div class="wrap">
-      <h2>Ако Windows те предупреди</h2>
-      <p class="intro">Програмите още не са подписани с платен сертификат. Затова при първо стартиране Windows SmartScreen може да покаже син прозорец. Това не значи, че има вирус, а че програмата е нова и Microsoft още не я познава.</p>
+      <h2 data-i18n="safeH">Ако Windows те предупреди</h2>
+      <p class="intro" data-i18n="safeIntro">Програмите още не са подписани с платен сертификат. Затова при първо стартиране Windows SmartScreen може да покаже син прозорец. Това не значи, че има вирус, а че програмата е нова и Microsoft още не я познава.</p>
 
       <div class="safe">
-        <div class="ss" role="img" aria-label="Пример за прозореца на SmartScreen с линка за повече информация и бутона за стартиране">
-          <p class="t">Windows защити компютъра ви</p>
-          <p class="b">Microsoft Defender SmartScreen предотврати стартирането на неразпознато приложение.</p>
-          <span class="lnk">Повече информация<span class="mark">1</span></span>
+        <div class="ss" role="img" aria-label="Пример за прозореца на SmartScreen с линка за повече информация и бутона за стартиране" data-i18n-attr="aria-label:ssLabel">
+          <p class="t" data-i18n="ssT">Windows защити компютъра ви</p>
+          <p class="b" data-i18n="ssB">Microsoft Defender SmartScreen предотврати стартирането на неразпознато приложение.</p>
+          <span class="lnk"><span data-i18n="ssMore">Повече информация</span><span class="mark">1</span></span>
           <div class="row">
-            <span class="sb">Изпълни въпреки това<span class="mark">2</span></span>
-            <span class="sb dim">Не изпълнявай</span>
+            <span class="sb"><span data-i18n="ssRun">Изпълни въпреки това</span><span class="mark">2</span></span>
+            <span class="sb dim" data-i18n="ssDont">Не изпълнявай</span>
           </div>
         </div>
 
         <div>
           <ol class="steps">
-            <li><div><b>Натисни „Повече информация“</b><span>Линкът е под текста в синия прозорец.</span></div></li>
-            <li><div><b>Натисни „Изпълни въпреки това“</b><span>Бутонът се появява долу вдясно, след първата стъпка.</span></div></li>
-            <li><div><b>Инсталирай нормално</b><span>Предупреждението се показва само при първото стартиране.</span></div></li>
+            <li><div><b data-i18n="st1">Натисни „Повече информация“</b><span data-i18n="st1s">Линкът е под текста в синия прозорец.</span></div></li>
+            <li><div><b data-i18n="st2">Натисни „Изпълни въпреки това“</b><span data-i18n="st2s">Бутонът се появява долу вдясно, след първата стъпка.</span></div></li>
+            <li><div><b data-i18n="st3">Инсталирай нормално</b><span data-i18n="st3s">Предупреждението се показва само при първото стартиране.</span></div></li>
           </ol>
 
           <div class="verify">
-            <p>Искаш да провериш, че файлът е точно този от GitHub? Отвори PowerShell в папката със свалените файлове и пусни:</p>
+            <p data-i18n="verify">Искаш да провериш, че файлът е точно този от GitHub? Отвори PowerShell в папката със свалените файлове и пусни:</p>
             <div class="code">
               <code id="hashCmd">Get-FileHash .\DesktopOrganizer-Setup.exe</code>
               <button type="button" id="copyBtn">Копирай</button>
             </div>
-            <p style="margin-top:12px">Сравни резултата със SHA-256 стойността в страницата на версията. Можеш да качиш файла и във <a href="https://www.virustotal.com" target="_blank" rel="noopener">VirusTotal</a>.</p>
+            <p style="margin-top:12px" data-i18n="verify2">Сравни резултата със SHA-256 стойността в страницата на версията. Можеш да качиш файла и във <a href="https://www.virustotal.com" target="_blank" rel="noopener">VirusTotal</a>.</p>
           </div>
         </div>
       </div>
@@ -376,53 +392,106 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
 
   <section class="block" id="kak">
     <div class="wrap">
-      <h2>Как ги правя</h2>
-      <p class="intro">Не пиша всеки ред код на ръка. Описвам на AI какво трябва да прави програмата, преглеждам кода и тествам всяка версия, преди да я пусна. Уча prompt engineering и QA автоматизация, а тези програми са моята практика.</p>
+      <h2 data-i18n="howH">Как ги правя</h2>
+      <p class="intro" data-i18n="howIntro">Не пиша всеки ред код на ръка. Описвам на AI какво трябва да прави програмата, преглеждам кода и тествам всяка версия, преди да я пусна. Уча prompt engineering и QA автоматизация, а тези програми са моята практика.</p>
       <ol class="proc">
-        <li><h3>Описвам задачата</h3><p>Пиша подробно какво трябва да прави програмата, какво не бива да пипа и как да реагира при грешка.</p></li>
-        <li><h3>AI пише кода</h3><p>Работя с Claude по C# и .NET кода стъпка по стъпка, докато поведението стане точно такова, каквото съм описал.</p></li>
-        <li><h3>Тествам и пускам</h3><p>Пробвам нормалните случаи и грешките. После GitHub Actions сам компилира инсталатора и го качва.</p></li>
+        <li><h3 data-i18n="p1">Описвам задачата</h3><p data-i18n="p1s">Пиша подробно какво трябва да прави програмата, какво не бива да пипа и как да реагира при грешка.</p></li>
+        <li><h3 data-i18n="p2">AI пише кода</h3><p data-i18n="p2s">Работя с Claude по C# и .NET кода стъпка по стъпка, докато поведението стане точно такова, каквото съм описал.</p></li>
+        <li><h3 data-i18n="p3">Тествам и пускам</h3><p data-i18n="p3s">Пробвам нормалните случаи и грешките. После GitHub Actions сам компилира инсталатора и го качва.</p></li>
       </ol>
     </div>
   </section>
 </main>
 
-<dialog class="shot" id="shot" aria-label="Снимка на програмата">
+<dialog class="shot" id="shot" aria-label="Снимка на програмата" data-i18n-attr="aria-label:shotLabel">
   <img id="shotImg" src="" alt="">
-  <button type="button" id="shotClose" aria-label="Затвори">&times;</button>
+  <button type="button" id="shotClose" aria-label="Затвори" data-i18n-attr="aria-label:close">&times;</button>
 </dialog>
 
 <footer>
   <div class="wrap">
     <div>
-      <p class="who">Радослав Чакъров, Крумовград</p>
-      <p>Намери грешка? Пиши ми на waitingboy@gmail.com или отвори issue в GitHub.</p>
+      <p class="who" data-i18n="who">Радослав Чакъров, Крумовград</p>
+      <p data-i18n="bug">Намери грешка? Пиши ми на waitingboy@gmail.com или отвори issue в GitHub.</p>
     </div>
     <div class="links">
       <a href="https://github.com/waitingboy-collab" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://waitingboy-collab.github.io/radoslav-portfolio" target="_blank" rel="noopener">Портфолио</a>
+      <a href="https://waitingboy-collab.github.io/radoslav-portfolio" target="_blank" rel="noopener" data-i18n="portfolio">Портфолио</a>
     </div>
   </div>
 </footer>
 
 <script>
 (function(){
+  // ---------- Language ----------
+  // Българският текст стои в HTML-а. Тук е само английският, по ключа от data-i18n / data-i18n-attr.
+  var EN = {
+    title: 'Rado’s Workshop',
+    metaDesc: 'Free, open-source Windows programs: Desktop Organizer, Disk Cleanup, Install Helper, Layout Fixer and Office Health Check. Made by Radoslav Chakarov.',
+    brand: 'Rado’s Workshop',
+    navLabel: 'Main navigation', navProgs: 'Programs', navSafety: 'Safety', navHow: 'How I make them',
+    h1: 'Small Windows programs that each do one job',
+    lede: 'They tidy the desktop, clean the disk, install programs and printers, fix text typed in the wrong keyboard layout and check office PCs. They are free and open source, and each one installs in a minute.',
+    ctaProgs: 'See the programs', ctaCode: 'Code on GitHub',
+    req: 'Windows 10 and 11, 64-bit. No need to install .NET.',
+    desktop: 'Desktop',
+    cap: 'Try the button. This is how Desktop Organizer works on a real desktop.',
+    progsH: 'The programs',
+    progsIntro: 'Each program is a separate project on GitHub. The download button always gets the latest version.',
+    ver: 'Version', seeGh: 'see GitHub', date: 'Released', size: 'Size',
+    dl: 'Download installer', src: 'Source code and releases',
+    dDO: 'Sorts the files on your desktop into folders by type: documents, pictures, videos, archives and programs.',
+    dDC: 'Clears temporary files and caches to free up disk space.',
+    dIH: 'Installs commonly used programs in a few clicks and helps with printers: adding them by IP, printing a test page, restarting the spooler. It also checks that Windows Update isn’t replacing the drivers. Made for office PCs.',
+    nLF: 'Layout Fixer',
+    dLF: 'Fixes text typed in the wrong keyboard layout, between Latin and Bulgarian Cyrillic: “zdravej” becomes “здравей”, and “геввд” becomes “hello”. Select the text and press Ctrl + Alt + Space. Works in any program and sits as an icon next to the clock.',
+    dOHC: 'Checks an office PC in one click: Windows updates, antivirus, disks, memory, printers, backups and internet. Produces a PDF report you can send to whoever looks after your computers. It only reads and never changes anything.',
+    thDO: 'Enlarge the Desktop Organizer screenshot', altDO: 'The Desktop Organizer window',
+    thDC: 'Enlarge the Disk Cleanup screenshot', altDC: 'The Disk Cleanup window',
+    thIH: 'Enlarge the Install Helper screenshot', altIH: 'The Install Helper window',
+    thLF: 'Enlarge the Layout Fixer diagram', altLF: 'Diagram: select “zdravej”, press Ctrl + Alt + Space and it becomes “здравей”',
+    thOHC: 'Enlarge the Office Health Check screenshot', altOHC: 'The Office Health Check window',
+    more: 'New programs appear here as soon as I release a first version.',
+    safeH: 'If Windows warns you',
+    safeIntro: 'The programs are not yet signed with a paid certificate, so the first time you run one, Windows SmartScreen may show a blue window. That doesn’t mean there’s a virus, only that the program is new and Microsoft doesn’t recognise it yet.',
+    ssLabel: 'Example of the SmartScreen window, with the More info link and the Run anyway button',
+    ssT: 'Windows protected your PC',
+    ssB: 'Microsoft Defender SmartScreen prevented an unrecognized app from starting. Running this app might put your PC at risk.',
+    ssMore: 'More info', ssRun: 'Run anyway', ssDont: 'Don’t run',
+    st1: 'Click “More info”', st1s: 'The link is below the text in the blue window.',
+    st2: 'Click “Run anyway”', st2s: 'The button appears at the bottom right after the first step.',
+    st3: 'Install as usual', st3s: 'The warning only appears the first time you run it.',
+    verify: 'Want to check the file is exactly the one from GitHub? Open PowerShell in the folder with the downloaded files and run:',
+    verify2: 'Compare the result with the SHA-256 value on the release page. You can also upload the file to <a href="https://www.virustotal.com" target="_blank" rel="noopener">VirusTotal</a>.',
+    howH: 'How I make them',
+    howIntro: 'I don’t write every line of code by hand. I describe to AI what the program should do, review the code and test every version before I release it. I’m learning prompt engineering and QA automation, and these programs are my practice.',
+    p1: 'I describe the task', p1s: 'I write in detail what the program should do, what it must not touch and how it should handle errors.',
+    p2: 'AI writes the code', p2s: 'I work with Claude on the C# and .NET code step by step until the behaviour is exactly what I described.',
+    p3: 'I test and release', p3s: 'I try the normal cases and the error cases. Then GitHub Actions builds the installer and uploads it automatically.',
+    shotLabel: 'Program screenshot', close: 'Close',
+    who: 'Radoslav Chakarov, Krumovgrad, Bulgaria',
+    bug: 'Found a bug? Email me at waitingboy@gmail.com or open an issue on GitHub.',
+    portfolio: 'Portfolio'
+  };
+  var lang = document.documentElement.lang === 'en' ? 'en' : 'bg';
+  function t(bg, en){ return lang === 'en' ? en : bg; }
+
   // ---------- Desktop demo ----------
   var FILES = [
-    ['Оферта_хотел','DOCX','doc', 4, 4,-4],
-    ['Фактура_09','PDF','doc', 21,12, 3],
-    ['IMG_2041','JPG','img', 39, 3,-2],
-    ['проект_final','ZIP','arc', 56,13, 5],
-    ['скрийншот','PNG','img', 7,33, 2],
-    ['дрон_крумовград','MP4','vid', 26,37,-5],
-    ['Бюджет','XLSX','doc', 45,30, 3],
-    ['setup_v2','EXE','exe', 63,40,-3],
-    ['backup','RAR','arc', 4,62, 4],
-    ['CV_Rado','PDF','doc', 22,66,-2],
-    ['лого','PNG','img', 41,58, 6],
-    ['VSCodeSetup','EXE','exe', 59,68,-4]
+    ['Оферта_хотел','DOCX','doc', 4, 4,-4, 'Hotel_offer'],
+    ['Фактура_09','PDF','doc', 21,12, 3, 'Invoice_09'],
+    ['IMG_2041','JPG','img', 39, 3,-2, 'IMG_2041'],
+    ['проект_final','ZIP','arc', 56,13, 5, 'project_final'],
+    ['скрийншот','PNG','img', 7,33, 2, 'screenshot'],
+    ['дрон_крумовград','MP4','vid', 26,37,-5, 'drone_krumovgrad'],
+    ['Бюджет','XLSX','doc', 45,30, 3, 'Budget'],
+    ['setup_v2','EXE','exe', 63,40,-3, 'setup_v2'],
+    ['backup','RAR','arc', 4,62, 4, 'backup'],
+    ['CV_Rado','PDF','doc', 22,66,-2, 'CV_Rado'],
+    ['лого','PNG','img', 41,58, 6, 'logo'],
+    ['VSCodeSetup','EXE','exe', 59,68,-4, 'VSCodeSetup']
   ];
-  var FOLDERS = [['doc','Документи'],['img','Снимки'],['vid','Видео'],['arc','Архиви'],['exe','Програми']];
+  var FOLDERS = [['doc','Документи','Documents'],['img','Снимки','Pictures'],['vid','Видео','Videos'],['arc','Архиви','Archives'],['exe','Програми','Programs']];
   var FX = 85, FY = [2,21,40,59,78];
 
   var desk = document.getElementById('desk');
@@ -444,18 +513,27 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
     el.style.left = FX + '%'; el.style.top = FY[i] + '%';
     el.innerHTML = '<svg viewBox="0 0 48 40"><use href="#fold"/></svg><span class="nm">' + f[1] + '</span><span class="badge">0</span>';
     desk.appendChild(el);
-    folders[f[0]] = { el: el, y: FY[i], n: 0, badge: el.querySelector('.badge') };
+    folders[f[0]] = { el: el, y: FY[i], n: 0, badge: el.querySelector('.badge'), nm: el.querySelector('.nm'), bg: f[1], en: f[2] };
   });
 
   FILES.forEach(function(f){
     var el = document.createElement('div');
     el.className = 'item file';
-    el.innerHTML = fileSvg(f[1], f[2]) + '<span class="nm">' + f[0] + '.' + f[1].toLowerCase() + '</span>';
+    el.innerHTML = fileSvg(f[1], f[2]) + '<span class="nm"></span>';
     desk.appendChild(el);
-    var o = { el: el, cat: f[2], x: f[3], y: f[4], r: f[5] };
+    var ext = '.' + f[1].toLowerCase();
+    var o = { el: el, cat: f[2], x: f[3], y: f[4], r: f[5], nm: el.querySelector('.nm'), bg: f[0] + ext, en: f[6] + ext };
     place(o, false);
     files.push(o);
   });
+
+  function renderDemo(){
+    Object.keys(folders).forEach(function(k){ var f = folders[k]; f.nm.textContent = t(f.bg, f.en); });
+    files.forEach(function(o){ o.nm.textContent = t(o.bg, o.en); });
+    if (busy) return;
+    status.textContent = sorted ? t('Подредено: 12 файла в 5 папки', 'Sorted: 12 files into 5 folders') : t('12 файла на десктопа', '12 files on the desktop');
+    btn.textContent = sorted ? t('Разхвърляй отново', 'Mess it up again') : t('Подреди десктопа', 'Sort the desktop');
+  }
 
   function place(o, inFolder){
     if (inFolder){
@@ -495,8 +573,7 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
       });
       setTimeout(function(){
         sorted = true; busy = false;
-        status.textContent = 'Подредено: 12 файла в 5 папки';
-        btn.textContent = 'Разхвърляй отново';
+        renderDemo();
       }, files.length * step + travel + 50);
     } else {
       Object.keys(folders).forEach(function(k){ setCount(k, 0); });
@@ -506,26 +583,28 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
       });
       setTimeout(function(){
         sorted = false; busy = false;
-        status.textContent = '12 файла на десктопа';
-        btn.textContent = 'Подреди десктопа';
+        renderDemo();
       }, files.length * (step / 2) + travel + 50);
     }
   });
 
   // ---------- Latest release info from GitHub ----------
   var USER = 'waitingboy-collab';
-  document.querySelectorAll('[data-repo]').forEach(function(row){
-    var repo = row.getAttribute('data-repo');
+  var rows = Array.prototype.slice.call(document.querySelectorAll('[data-repo]'));
+  function renderRel(row){
+    var j = row._rel; if (!j) return;
     function set(f, v){ var d = row.querySelector('[data-f="' + f + '"]'); if (d && v) d.textContent = v; }
+    set('ver', j.tag_name);
+    if (j.published_at) set('date', new Date(j.published_at).toLocaleDateString(t('bg-BG', 'en-GB'), { day:'numeric', month:'long', year:'numeric' }));
+    var exe = (j.assets || []).filter(function(a){ return /\.exe$/i.test(a.name); })[0];
+    if (exe){ var mb = (exe.size / 1048576).toFixed(1); set('size', t(mb.replace('.', ','), mb) + ' MB'); }
+  }
+  rows.forEach(function(row){
+    var repo = row.getAttribute('data-repo');
     try {
       fetch('https://api.github.com/repos/' + USER + '/' + repo + '/releases/latest')
         .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
-        .then(function(j){
-          set('ver', j.tag_name);
-          if (j.published_at) set('date', new Date(j.published_at).toLocaleDateString('bg-BG', { day:'numeric', month:'long', year:'numeric' }));
-          var exe = (j.assets || []).filter(function(a){ return /\.exe$/i.test(a.name); })[0];
-          if (exe) set('size', (exe.size / 1048576).toFixed(1).replace('.', ',') + ' MB');
-        })
+        .then(function(j){ row._rel = j; renderRel(row); })
         .catch(function(){});
     } catch (e) {}
   });
@@ -552,15 +631,57 @@ footer .links{display:flex;flex-wrap:wrap;gap:20px}
     function selectIt(){
       var range = document.createRange(); range.selectNodeContents(cmd);
       var sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
-      copyBtn.textContent = 'Маркирано';
+      copyBtn.textContent = t('Маркирано', 'Selected');
     }
     try {
       navigator.clipboard.writeText(text).then(function(){
-        copyBtn.textContent = 'Копирано';
-        setTimeout(function(){ copyBtn.textContent = 'Копирай'; }, 1800);
+        copyBtn.textContent = t('Копирано', 'Copied');
+        setTimeout(function(){ copyBtn.textContent = t('Копирай', 'Copy'); }, 1800);
       }, selectIt);
     } catch (e) { selectIt(); }
   });
+
+  // ---------- Apply language ----------
+  var langBtn = document.getElementById('langBtn');
+  var metaDesc = document.querySelector('meta[name="description"]');
+  var BG_TITLE = document.title, BG_DESC = metaDesc ? metaDesc.getAttribute('content') : '';
+  function applyLang(l){
+    lang = l;
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-i18n]').forEach(function(n){
+      if (n._bg === undefined) n._bg = n.innerHTML;
+      var k = n.getAttribute('data-i18n');
+      n.innerHTML = l === 'en' && EN[k] != null ? EN[k] : n._bg;
+    });
+    document.querySelectorAll('[data-i18n-attr]').forEach(function(n){
+      n._bga = n._bga || {};
+      n.getAttribute('data-i18n-attr').split(';').forEach(function(p){
+        var a = p.split(':'), name = a[0], k = a[1];
+        if (n._bga[name] === undefined) n._bga[name] = n.getAttribute(name);
+        n.setAttribute(name, l === 'en' && EN[k] != null ? EN[k] : n._bga[name]);
+      });
+    });
+    document.querySelectorAll('[data-only]').forEach(function(n){ n.hidden = n.getAttribute('data-only') !== l; });
+    document.querySelectorAll('img[data-src-en]').forEach(function(img){
+      if (img._bgSrc === undefined) img._bgSrc = img.getAttribute('src');
+      img.setAttribute('src', l === 'en' ? img.getAttribute('data-src-en') : img._bgSrc);
+    });
+    document.title = t(BG_TITLE, EN.title);
+    if (metaDesc) metaDesc.setAttribute('content', t(BG_DESC, EN.metaDesc));
+    langBtn.textContent = l === 'en' ? 'BG' : 'EN';
+    langBtn.setAttribute('lang', l === 'en' ? 'bg' : 'en');
+    langBtn.setAttribute('aria-label', l === 'en' ? 'Българска версия' : 'English version');
+    copyBtn.textContent = t('Копирай', 'Copy');
+    renderDemo();
+    rows.forEach(renderRel);
+  }
+  langBtn.addEventListener('click', function(){
+    var l = lang === 'en' ? 'bg' : 'en';
+    applyLang(l);
+    try { localStorage.setItem('lang', l); } catch (e) {}
+    try { var u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u); } catch (e) {}
+  });
+  applyLang(lang);
 })();
 </script>
 </body>
