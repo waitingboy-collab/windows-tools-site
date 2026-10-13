@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Работилницата на Радо</title>
+<meta name="description" content="Безплатни програми за Windows с отворен код: Desktop Organizer, Disk Cleanup, Install Helper. Направени от Радослав Чакъров.">
+<meta property="og:title" content="Работилницата на Радо">
+<meta property="og:description" content="Малки програми за Windows, които вършат по една работа.">
+<style>img{max-width:100%}[hidden]{display:none!important}body{margin:0}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: split hero (headline left, live desktop demo right), ruled list of programs, SmartScreen guide, 3-step process, footer. Left-aligned throughout. */
+:root{
+  --paper:#F4F6F9; --surface:#FFFFFF; --ink:#141C28; --muted:#566173; --line:#DAE0E8;
+  --folder:#F2B321; --folder-back:#D4960A; --desk:#DCE6F1; --desk-2:#C9D8EA; --ok:#1E7F4F;
+  --ss:#0B5CAD; --ss-ink:#FFFFFF;
+  --c-doc:#2B66CF; --c-img:#23885A; --c-vid:#7347C7; --c-arc:#93622A; --c-exe:#3A4555;
+  --display:"Unbounded","Arial Black",sans-serif;
+  --body:"Golos Text","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",Consolas,ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#10141B; --surface:#181E28; --ink:#E9EDF3; --muted:#9BA6B6; --line:#29313D;
+  --folder:#F2B321; --folder-back:#B9830A; --desk:#1B2533; --desk-2:#22314A; --ok:#4CC38A;
+  --ss:#0E5FB3; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#10141B; --surface:#181E28; --ink:#E9EDF3; --muted:#9BA6B6; --line:#29313D;
+  --folder:#F2B321; --folder-back:#B9830A; --desk:#1B2533; --desk-2:#22314A; --ok:#4CC38A;
+  --ss:#0E5FB3; color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1120px;margin-inline:auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--paper);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--display);font-weight:600;font-size:15px}
+.brand svg{width:28px;height:24px;flex:none}
+.nav{display:flex;gap:22px;font-size:15px}
+.nav a{text-decoration:none;color:var(--muted)}
+.nav a:hover{color:var(--ink)}
+@media (max-width:640px){.nav .opt{display:none}}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:8px;font:600 16px/1 var(--body);text-decoration:none;padding:14px 20px;border-radius:10px;border:1px solid transparent;cursor:pointer}
+.btn-main{background:var(--ink);color:var(--paper)}
+.btn-main:hover{background:var(--muted)}
+.btn-line{border-color:var(--line);background:var(--surface);color:var(--ink)}
+.btn-line:hover{border-color:var(--muted)}
+.btn svg{width:18px;height:18px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:56px;align-items:center;padding-block:64px 80px}
+.hero h1{font-size:clamp(30px,4.6vw,54px);letter-spacing:-.01em}
+.hero .lede{margin-top:22px;font-size:19px;color:var(--muted);max-width:34em}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.hero .req{margin-top:18px;font-size:14px;color:var(--muted)}
+@media (max-width:880px){.hero{grid-template-columns:1fr;gap:40px;padding-block:40px 56px}}
+
+/* desktop demo */
+.window{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(20,28,40,.35)}
+.titlebar{display:flex;justify-content:space-between;align-items:center;padding:8px 6px 8px 14px;font-size:13px;color:var(--muted);border-bottom:1px solid var(--line)}
+.winctl{display:flex}
+.winctl span{width:34px;height:22px;display:grid;place-items:center}
+.winctl svg{width:10px;height:10px;stroke:var(--muted);fill:none;stroke-width:1.2}
+.desk{position:relative;aspect-ratio:16/11;max-width:100%;background:radial-gradient(120% 90% at 20% 0%,var(--desk) 40%,var(--desk-2));container-type:inline-size;overflow:hidden}
+.item{position:absolute;width:11%;display:flex;flex-direction:column;align-items:center;gap:.6cqi;transition:left .7s cubic-bezier(.6,0,.2,1),top .7s cubic-bezier(.6,0,.2,1),transform .7s cubic-bezier(.6,0,.2,1),opacity .35s ease .45s}
+.item svg{width:72%;height:auto;display:block;filter:drop-shadow(0 1px 1px rgba(0,0,0,.18))}
+.item .nm{font-size:11px;font-size:1.55cqi;line-height:1.25;text-align:center;color:var(--ink);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.folder svg{width:86%}
+.folder .badge{position:absolute;top:-1cqi;right:4%;min-width:3.4cqi;padding:.3cqi .9cqi;border-radius:99px;background:var(--ink);color:var(--paper);font:600 11px/1.3 var(--body);font-size:1.5cqi;text-align:center;opacity:0;transform:scale(.6);transition:opacity .3s,transform .3s}
+.folder.has .badge{opacity:1;transform:scale(1)}
+.folder.pulse svg{animation:pulse .35s ease}
+@keyframes pulse{50%{transform:scale(1.08)}}
+.file.in{opacity:0}
+.deskbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 14px;border-top:1px solid var(--line)}
+.deskbar .status{font-size:14px;color:var(--muted)}
+.deskbar .btn{padding:10px 16px;font-size:15px}
+.window + .cap{margin-top:12px;font-size:14px;color:var(--muted)}
+
+/* sections */
+section.block{padding-block:72px;border-top:1px solid var(--line)}
+.block h2{font-size:clamp(24px,3vw,34px)}
+.block .intro{margin-top:14px;color:var(--muted);max-width:40em}
+
+/* programs */
+.progs{list-style:none;margin:40px 0 0;padding:0}
+.prog{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:28px;align-items:start;padding-block:32px;border-top:1px solid var(--line)}
+.prog:last-child{border-bottom:1px solid var(--line)}
+.prog .ico{width:72px;height:72px;border-radius:16px;background:var(--surface);border:1px solid var(--line);display:grid;place-items:center}
+.prog .ico svg{width:40px;height:40px}
+.prog h3{font-size:22px}
+.prog .desc{margin-top:8px;max-width:38em}
+.meta{display:flex;flex-wrap:wrap;gap:8px 28px;margin:16px 0 0;font-size:14px}
+.meta div{display:flex;gap:6px}
+.meta dt{color:var(--muted)}
+.meta dd{margin:0;font-variant-numeric:tabular-nums}
+.acts{display:flex;flex-direction:column;align-items:stretch;gap:10px;min-width:220px}
+.acts .src{font-size:15px;color:var(--muted);text-align:center}
+.more{margin-top:24px;color:var(--muted);font-size:15px}
+@media (max-width:760px){
+  .prog{grid-template-columns:56px minmax(0,1fr);gap:18px}
+  .prog .ico{width:56px;height:56px;border-radius:14px}
+  .prog .ico svg{width:32px;height:32px}
+  .acts{grid-column:1/-1;min-width:0}
+}
+
+/* safety */
+.safe{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;margin-top:40px;align-items:start}
+@media (max-width:880px){.safe{grid-template-columns:1fr;gap:36px}}
+.ss{background:var(--ss);color:var(--ss-ink);border-radius:10px;padding:28px 26px 22px;font-family:"Segoe UI",var(--body);position:relative}
+.ss .t{font-size:22px;font-weight:600;line-height:1.25}
+.ss .b{margin-top:12px;font-size:14px;opacity:.9}
+.ss .lnk{display:inline-block;margin-top:10px;font-size:14px;text-decoration:underline;position:relative}
+.ss .row{display:flex;justify-content:flex-end;gap:10px;margin-top:26px}
+.ss .sb{font-size:14px;padding:8px 16px;border:1px solid rgba(255,255,255,.7);position:relative}
+.ss .sb.dim{opacity:.55}
+.mark{position:absolute;top:-12px;right:-14px;width:24px;height:24px;border-radius:50%;background:var(--folder);color:#141C28;font:700 13px/24px var(--body);text-align:center}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:18px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:14px;counter-increment:s}
+.steps li::before{content:counter(s);width:32px;height:32px;border-radius:50%;background:var(--folder);color:#141C28;font:700 15px/32px var(--body);text-align:center}
+.steps b{display:block}
+.steps span{color:var(--muted);font-size:15px}
+.verify{margin-top:32px;padding-top:24px;border-top:1px solid var(--line)}
+.verify p{font-size:15px;color:var(--muted)}
+.code{display:flex;align-items:center;gap:10px;margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 10px 10px 14px}
+.code code{font-family:var(--mono);font-size:14px;flex:1;min-width:0;overflow-x:auto;white-space:nowrap}
+.code button{font:500 14px var(--body);background:none;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+.code button:hover{border-color:var(--muted)}
+
+/* process */
+.proc{list-style:none;margin:40px 0 0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:36px;counter-reset:p}
+.proc li{counter-increment:p;padding-top:20px;border-top:2px solid var(--ink)}
+.proc li::before{content:counter(p);font-family:var(--display);font-weight:600;font-size:15px;color:var(--muted)}
+.proc h3{font-size:19px;margin-top:10px}
+.proc p{margin-top:10px;color:var(--muted);font-size:16px}
+@media (max-width:760px){.proc{grid-template-columns:1fr;gap:28px}}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding-block:40px 56px;font-size:15px;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px}
+footer .who{color:var(--ink);font-weight:600}
+footer .links{display:flex;flex-wrap:wrap;gap:20px}
+
+@media (prefers-reduced-motion:reduce){
+  .item,.folder .badge{transition:none}
+  .folder.pulse svg{animation:none}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="fold" viewBox="0 0 48 40">
+      <path d="M2 6a3 3 0 0 1 3-3h13l5 5h20a3 3 0 0 1 3 3v24a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3z" fill="var(--folder-back)"/>
+      <path d="M2 13a2 2 0 0 1 2-2h40a2 2 0 0 1 2 2v22a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3z" fill="var(--folder)"/>
+    </symbol>
+    <symbol id="gh" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></symbol>
+    <symbol id="dl" viewBox="0 0 24 24"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#">
+      <svg aria-hidden="true"><use href="#fold"/></svg>
+      Работилницата на Радо
+    </a>
+    <nav class="nav" aria-label="Основна навигация">
+      <a href="#programi">Програми</a>
+      <a class="opt" href="#bezopasnost">Безопасност</a>
+      <a class="opt" href="#kak">Как ги правя</a>
+      <a href="https://github.com/waitingboy-collab" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <div>
+      <h1>Малки програми за Windows, които вършат по една работа</h1>
+      <p class="lede">Подреждат десктопа, чистят диска и инсталират програми и принтери. Безплатни са, с отворен код, и всяка се инсталира за минута.</p>
+      <div class="ctas">
+        <a class="btn btn-main" href="#programi">Виж програмите</a>
+        <a class="btn btn-line" href="https://github.com/waitingboy-collab" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#gh"/></svg>Кодът в GitHub</a>
+      </div>
+      <p class="req">Windows 10 и 11, 64-bit. Не е нужно да инсталираш .NET.</p>
+    </div>
+
+    <div>
+      <figure class="window">
+        <div class="titlebar">
+          <span>Десктоп</span>
+          <span class="winctl" aria-hidden="true">
+            <span><svg viewBox="0 0 10 10"><path d="M0 5h10"/></svg></span>
+            <span><svg viewBox="0 0 10 10"><rect x=".5" y=".5" width="9" height="9"/></svg></span>
+            <span><svg viewBox="0 0 10 10"><path d="M0 0l10 10M10 0 0 10"/></svg></span>
+          </span>
+        </div>
+        <div class="desk" id="desk" aria-hidden="true"></div>
+        <div class="deskbar">
+          <span class="status" id="deskStatus" aria-live="polite">12 файла на десктопа</span>
+          <button class="btn btn-main" id="sortBtn" type="button">Подреди десктопа</button>
+        </div>
+      </figure>
+      <p class="cap">Пробвай бутона. Така работи Desktop Organizer на истински десктоп.</p>
+    </div>
+  </div>
+
+  <section class="block" id="programi">
+    <div class="wrap">
+      <h2>Програмите</h2>
+      <p class="intro">Всяка програма е отделен проект в GitHub. Бутонът за сваляне винаги дава последната версия.</p>
+
+      <ul class="progs">
+        <li class="prog" data-repo="desktop-organizer">
+          <div class="ico" aria-hidden="true">
+            <svg viewBox="0 0 40 40"><rect x="3" y="3" width="15" height="15" rx="3" fill="var(--folder)"/><rect x="22" y="3" width="15" height="15" rx="3" fill="none" stroke="var(--muted)" stroke-width="2"/><rect x="3" y="22" width="15" height="15" rx="3" fill="none" stroke="var(--muted)" stroke-width="2"/><rect x="22" y="22" width="15" height="15" rx="3" fill="none" stroke="var(--muted)" stroke-width="2"/></svg>
+          </div>
+          <div>
+            <h3>Desktop Organizer</h3>
+            <p class="desc">Подрежда файловете от десктопа в папки според вида им: документи, снимки, видео, архиви и програми.</p>
+            <dl class="meta">
+              <div><dt>Версия</dt><dd data-f="ver">виж в GitHub</dd></div>
+              <div><dt>Пусната</dt><dd data-f="date">—</dd></div>
+              <div><dt>Размер</dt><dd data-f="size">—</dd></div>
+            </dl>
+          </div>
+          <div class="acts">
+            <a class="btn btn-main" href="https://github.com/waitingboy-collab/desktop-organizer/releases/latest/download/DesktopOrganizer-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg>Свали инсталатора</a>
+            <a class="src" href="https://github.com/waitingboy-collab/desktop-organizer" target="_blank" rel="noopener">Сорс код и версии</a>
+          </div>
+        </li>
+
+        <li class="prog" data-repo="disk-cleanup">
+          <div class="ico" aria-hidden="true">
+            <svg viewBox="0 0 40 40"><rect x="3" y="9" width="34" height="22" rx="4" fill="none" stroke="var(--muted)" stroke-width="2"/><rect x="7" y="13" width="15" height="14" rx="2" fill="var(--folder)"/><circle cx="30" cy="25" r="2" fill="var(--muted)"/></svg>
+          </div>
+          <div>
+            <h3>Disk Cleanup</h3>
+            <p class="desc">Изчиства временни файлове и кеш, за да освободи място на диска.</p>
+            <dl class="meta">
+              <div><dt>Версия</dt><dd data-f="ver">виж в GitHub</dd></div>
+              <div><dt>Пусната</dt><dd data-f="date">—</dd></div>
+              <div><dt>Размер</dt><dd data-f="size">—</dd></div>
+            </dl>
+          </div>
+          <div class="acts">
+            <a class="btn btn-main" href="https://github.com/waitingboy-collab/disk-cleanup/releases/latest/download/DiskCleanup-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg>Свали инсталатора</a>
+            <a class="src" href="https://github.com/waitingboy-collab/disk-cleanup" target="_blank" rel="noopener">Сорс код и версии</a>
+          </div>
+        </li>
+
+        <li class="prog" data-repo="install-helper">
+          <div class="ico" aria-hidden="true">
+            <svg viewBox="0 0 40 40"><rect x="11" y="4" width="18" height="9" rx="1.5" fill="none" stroke="var(--muted)" stroke-width="2"/><rect x="4" y="13" width="32" height="15" rx="3" fill="none" stroke="var(--muted)" stroke-width="2"/><rect x="11" y="23" width="18" height="13" rx="1.5" fill="var(--folder)"/><circle cx="30" cy="18.5" r="1.8" fill="var(--muted)"/></svg>
+          </div>
+          <div>
+            <h3>Install Helper</h3>
+            <p class="desc">Инсталира често ползвани програми с няколко клика и помага с принтерите: добавяне по IP, тестова страница, рестарт на спулера. Проверява и дали Windows Update не подменя драйверите. Направена за офис компютри.</p>
+            <dl class="meta">
+              <div><dt>Версия</dt><dd data-f="ver">виж в GitHub</dd></div>
+              <div><dt>Пусната</dt><dd data-f="date">—</dd></div>
+              <div><dt>Размер</dt><dd data-f="size">—</dd></div>
+            </dl>
+          </div>
+          <div class="acts">
+            <a class="btn btn-main" href="https://github.com/waitingboy-collab/install-helper/releases/latest/download/InstallHelper-Setup.exe"><svg aria-hidden="true"><use href="#dl"/></svg>Свали инсталатора</a>
+            <a class="src" href="https://github.com/waitingboy-collab/install-helper" target="_blank" rel="noopener">Сорс код и версии</a>
+          </div>
+        </li>
+      </ul>
+      <p class="more">Следващите програми се появяват тук веднага щом пусна първа версия.</p>
+    </div>
+  </section>
+
+  <section class="block" id="bezopasnost">
+    <div class="wrap">
+      <h2>Ако Windows те предупреди</h2>
+      <p class="intro">Програмите още не са подписани с платен сертификат. Затова при първо стартиране Windows SmartScreen може да покаже син прозорец. Това не значи, че има вирус, а че програмата е нова и Microsoft още не я познава.</p>
+
+      <div class="safe">
+        <div class="ss" role="img" aria-label="Пример за прозореца на SmartScreen с линка за повече информация и бутона за стартиране">
+          <p class="t">Windows защити компютъра ви</p>
+          <p class="b">Microsoft Defender SmartScreen предотврати стартирането на неразпознато приложение.</p>
+          <span class="lnk">Повече информация<span class="mark">1</span></span>
+          <div class="row">
+            <span class="sb">Изпълни въпреки това<span class="mark">2</span></span>
+            <span class="sb dim">Не изпълнявай</span>
+          </div>
+        </div>
+
+        <div>
+          <ol class="steps">
+            <li><div><b>Натисни „Повече информация“</b><span>Линкът е под текста в синия прозорец.</span></div></li>
+            <li><div><b>Натисни „Изпълни въпреки това“</b><span>Бутонът се появява долу вдясно, след първата стъпка.</span></div></li>
+            <li><div><b>Инсталирай нормално</b><span>Предупреждението се показва само при първото стартиране.</span></div></li>
+          </ol>
+
+          <div class="verify">
+            <p>Искаш да провериш, че файлът е точно този от GitHub? Отвори PowerShell в папката със свалените файлове и пусни:</p>
+            <div class="code">
+              <code id="hashCmd">Get-FileHash .\DesktopOrganizer-Setup.exe</code>
+              <button type="button" id="copyBtn">Копирай</button>
+            </div>
+            <p style="margin-top:12px">Сравни резултата със SHA-256 стойността в страницата на версията. Можеш да качиш файла и във <a href="https://www.virustotal.com" target="_blank" rel="noopener">VirusTotal</a>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="kak">
+    <div class="wrap">
+      <h2>Как ги правя</h2>
+      <p class="intro">Не пиша всеки ред код на ръка. Описвам на AI какво трябва да прави програмата, преглеждам кода и тествам всяка версия, преди да я пусна. Уча prompt engineering и QA автоматизация, а тези програми са моята практика.</p>
+      <ol class="proc">
+        <li><h3>Описвам задачата</h3><p>Пиша подробно какво трябва да прави програмата, какво не бива да пипа и как да реагира при грешка.</p></li>
+        <li><h3>AI пише кода</h3><p>Работя с Claude по C# и .NET кода стъпка по стъпка, докато поведението стане точно такова, каквото съм описал.</p></li>
+        <li><h3>Тествам и пускам</h3><p>Пробвам нормалните случаи и грешките. После GitHub Actions сам компилира инсталатора и го качва.</p></li>
+      </ol>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <p class="who">Радослав Чакъров, Крумовград</p>
+      <p>Намери грешка? Пиши ми на waitingboy@gmail.com или отвори issue в GitHub.</p>
+    </div>
+    <div class="links">
+      <a href="https://github.com/waitingboy-collab" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://waitingboy-collab.github.io/radoslav-portfolio" target="_blank" rel="noopener">Портфолио</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // ---------- Desktop demo ----------
+  var FILES = [
+    ['Оферта_хотел','DOCX','doc', 4, 4,-4],
+    ['Фактура_09','PDF','doc', 21,12, 3],
+    ['IMG_2041','JPG','img', 39, 3,-2],
+    ['проект_final','ZIP','arc', 56,13, 5],
+    ['скрийншот','PNG','img', 7,33, 2],
+    ['дрон_крумовград','MP4','vid', 26,37,-5],
+    ['Бюджет','XLSX','doc', 45,30, 3],
+    ['setup_v2','EXE','exe', 63,40,-3],
+    ['backup','RAR','arc', 4,62, 4],
+    ['CV_Rado','PDF','doc', 22,66,-2],
+    ['лого','PNG','img', 41,58, 6],
+    ['VSCodeSetup','EXE','exe', 59,68,-4]
+  ];
+  var FOLDERS = [['doc','Документи'],['img','Снимки'],['vid','Видео'],['arc','Архиви'],['exe','Програми']];
+  var FX = 85, FY = [2,21,40,59,78];
+
+  var desk = document.getElementById('desk');
+  var btn = document.getElementById('sortBtn');
+  var status = document.getElementById('deskStatus');
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var folders = {}, files = [], sorted = false, busy = false;
+
+  function fileSvg(ext, cat){
+    return '<svg viewBox="0 0 40 48"><path d="M5 1.5h21l11 11V45a1.5 1.5 0 0 1-1.5 1.5h-30A1.5 1.5 0 0 1 4 45V3a1.5 1.5 0 0 1 1-1.5z" fill="var(--surface)" stroke="var(--muted)" stroke-width="1.5"/>'
+      + '<path d="M26 1.5V12.5H37" fill="none" stroke="var(--muted)" stroke-width="1.5"/>'
+      + '<rect x="0" y="26" width="31" height="12" rx="2" fill="var(--c-' + cat + ')"/>'
+      + '<text x="15.5" y="34.6" text-anchor="middle" font-family="Golos Text,Segoe UI,sans-serif" font-size="8" font-weight="700" fill="#fff">' + ext + '</text></svg>';
+  }
+
+  FOLDERS.forEach(function(f, i){
+    var el = document.createElement('div');
+    el.className = 'item folder';
+    el.style.left = FX + '%'; el.style.top = FY[i] + '%';
+    el.innerHTML = '<svg viewBox="0 0 48 40"><use href="#fold"/></svg><span class="nm">' + f[1] + '</span><span class="badge">0</span>';
+    desk.appendChild(el);
+    folders[f[0]] = { el: el, y: FY[i], n: 0, badge: el.querySelector('.badge') };
+  });
+
+  FILES.forEach(function(f){
+    var el = document.createElement('div');
+    el.className = 'item file';
+    el.innerHTML = fileSvg(f[1], f[2]) + '<span class="nm">' + f[0] + '.' + f[1].toLowerCase() + '</span>';
+    desk.appendChild(el);
+    var o = { el: el, cat: f[2], x: f[3], y: f[4], r: f[5] };
+    place(o, false);
+    files.push(o);
+  });
+
+  function place(o, inFolder){
+    if (inFolder){
+      o.el.style.left = FX + '%';
+      o.el.style.top = folders[o.cat].y + '%';
+      o.el.style.transform = 'scale(.35) rotate(0deg)';
+      o.el.classList.add('in');
+    } else {
+      o.el.style.left = o.x + '%';
+      o.el.style.top = o.y + '%';
+      o.el.style.transform = 'rotate(' + o.r + 'deg)';
+      o.el.classList.remove('in');
+    }
+  }
+
+  function setCount(cat, n){
+    var f = folders[cat];
+    f.n = n; f.badge.textContent = n;
+    f.el.classList.toggle('has', n > 0);
+  }
+
+  btn.addEventListener('click', function(){
+    if (busy) return;
+    busy = true;
+    var step = reduce ? 0 : 90, travel = reduce ? 0 : 700;
+    if (!sorted){
+      files.forEach(function(o, i){
+        o.el.style.transitionDelay = (i * step) + 'ms';
+        place(o, true);
+        setTimeout(function(){
+          setCount(o.cat, folders[o.cat].n + 1);
+          if (!reduce){
+            var fe = folders[o.cat].el;
+            fe.classList.remove('pulse'); void fe.offsetWidth; fe.classList.add('pulse');
+          }
+        }, i * step + travel);
+      });
+      setTimeout(function(){
+        sorted = true; busy = false;
+        status.textContent = 'Подредено: 12 файла в 5 папки';
+        btn.textContent = 'Разхвърляй отново';
+      }, files.length * step + travel + 50);
+    } else {
+      Object.keys(folders).forEach(function(k){ setCount(k, 0); });
+      files.forEach(function(o, i){
+        o.el.style.transitionDelay = (i * (step / 2)) + 'ms';
+        place(o, false);
+      });
+      setTimeout(function(){
+        sorted = false; busy = false;
+        status.textContent = '12 файла на десктопа';
+        btn.textContent = 'Подреди десктопа';
+      }, files.length * (step / 2) + travel + 50);
+    }
+  });
+
+  // ---------- Latest release info from GitHub ----------
+  var USER = 'waitingboy-collab';
+  document.querySelectorAll('[data-repo]').forEach(function(row){
+    var repo = row.getAttribute('data-repo');
+    function set(f, v){ var d = row.querySelector('[data-f="' + f + '"]'); if (d && v) d.textContent = v; }
+    try {
+      fetch('https://api.github.com/repos/' + USER + '/' + repo + '/releases/latest')
+        .then(function(r){ if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(function(j){
+          set('ver', j.tag_name);
+          if (j.published_at) set('date', new Date(j.published_at).toLocaleDateString('bg-BG', { day:'numeric', month:'long', year:'numeric' }));
+          var exe = (j.assets || []).filter(function(a){ return /\.exe$/i.test(a.name); })[0];
+          if (exe) set('size', (exe.size / 1048576).toFixed(1).replace('.', ',') + ' MB');
+        })
+        .catch(function(){});
+    } catch (e) {}
+  });
+
+  // ---------- Copy hash command ----------
+  var copyBtn = document.getElementById('copyBtn');
+  var cmd = document.getElementById('hashCmd');
+  copyBtn.addEventListener('click', function(){
+    var text = cmd.textContent;
+    function selectIt(){
+      var range = document.createRange(); range.selectNodeContents(cmd);
+      var sel = getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      copyBtn.textContent = 'Маркирано';
+    }
+    try {
+      navigator.clipboard.writeText(text).then(function(){
+        copyBtn.textContent = 'Копирано';
+        setTimeout(function(){ copyBtn.textContent = 'Копирай'; }, 1800);
+      }, selectIt);
+    } catch (e) { selectIt(); }
+  });
+})();
+</script>
+</body>
+</html>
